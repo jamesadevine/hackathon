@@ -49,7 +49,7 @@ public class PotHoleASync extends AsyncTask<Void, Integer, String> {
 
         @Override
         protected void onPostExecute(String data) {
-            Log.e("crap",JSONDecoder.decodeJSON(data).toString());
+            Log.e("crap",String.valueOf(JSONDecoder.decodeJSON(data).size()));
             multipleCallback.potholeCallback(JSONDecoder.decodeJSON(data));
         }
 }

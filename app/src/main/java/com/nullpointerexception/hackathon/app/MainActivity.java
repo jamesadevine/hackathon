@@ -96,9 +96,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             @Override
             public void potholeCallback(ArrayList<PotHole> p) {
                 List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
-
+                Log.e("crap","HELP");
                 for(PotHole potHole:p){
-                    Log.e("crap","HELP");
+
                     list.add(new WeightedLatLng(new LatLng(potHole.getLatitude(),potHole.getLongitude()),1));
                 }
                 // Create a heat map tile provider, passing it the latlngs of the police stations.
@@ -109,9 +109,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                 map.addTileOverlay(new TileOverlayOptions().tileProvider(hmtp));
             }
         };
-        /*PotHoleASync async = new PotHoleASync(potholeCallback);
+        PotHoleASync async = new PotHoleASync(potholeCallback);
         async.execute();
-        List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
+        /*List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
 
         // Get the data: latitude/longitude positions of police stations.
         list.add(new WeightedLatLng(new LatLng(53.389818,-3.087004),1));
