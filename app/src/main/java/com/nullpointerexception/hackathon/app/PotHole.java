@@ -9,6 +9,9 @@ public class PotHole {
     private String description;
     private double latitude;
     private double longitude;
+    private double weight;
+
+
 
     public PotHole(String name, String longname, String description, double latitude, double longitude) {
         this.name = name==null?"":name;
@@ -36,5 +39,14 @@ public class PotHole {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getWeight() {
+
+        return weight;
     }
 }

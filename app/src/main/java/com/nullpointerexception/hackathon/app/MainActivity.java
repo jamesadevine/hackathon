@@ -18,7 +18,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
@@ -96,10 +95,25 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             @Override
             public void potholeCallback(ArrayList<PotHole> p) {
                 List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
-                Log.e("crap","HELP");
+                int size = p.size();
+                double[] carFreq= new double[size];
+                double[] rainfall=new double[size];
+                double[] temp=new double[size];
+                for(int i=0;i<size;i++){
+                    carFreq[i]=DataWeighter.randomWithRange(10000,100000);
+                    rainfall[i]=DataWeighter.randomWithRange(5,15);
+                    temp[i]=DataWeighter.randomWithRange(-5,15);
+                }
+                Log.e("CRAP FREQ",String.valueOf(carFreq[20]));
+                double[] weights=DataWeighter.weight(carFreq,rainfall,temp);
+                for(int i=0;i<weights.length;i++){
+                    p.get(i).setWeight(weights[i]);
+
+                }
+                Log.e("crap",String.valueOf(p.get(20).getWeight()));
                 for(PotHole potHole:p){
 
-                    list.add(new WeightedLatLng(new LatLng(potHole.getLatitude(),potHole.getLongitude()),1));
+                    list.add(new WeightedLatLng(new LatLng(potHole.getLatitude(),potHole.getLongitude()),potHole.getWeight()));
                 }
                 // Create a heat map tile provider, passing it the latlngs of the police stations.
                 hmtp = new HeatmapTileProvider.Builder()
@@ -111,30 +125,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         };
         PotHoleASync async = new PotHoleASync(potholeCallback);
         async.execute();
-        /*List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
 
-        // Get the data: latitude/longitude positions of police stations.
-        list.add(new WeightedLatLng(new LatLng(53.389818,-3.087004),1));
-        list.add(new WeightedLatLng(new LatLng(53.187997,-2.376552),1));
-        list.add(new WeightedLatLng(new LatLng(53.134525,-2.336175),1));
-        list.add(new WeightedLatLng(new LatLng(53.36045,-2.508902),1));
-        list.add(new WeightedLatLng(new LatLng(53.585445,-2.174717),1));
-        list.add(new WeightedLatLng(new LatLng(53.743282,-2.650813),1));
-        list.add(new WeightedLatLng(new LatLng(53.510633,-2.134239),1));
-
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.389818,-3.087004)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.187997,-2.376552)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.134525,-2.336175)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.36045,-2.508902)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.585445,-2.174717)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.743282,-2.650813)));
-        map.addMarker(new MarkerOptions().title("POint").position(new LatLng(53.510633,-2.134239)));
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
-        hmtp = new HeatmapTileProvider.Builder()
-                .weightedData(list)
-                .build();
-        // Add a tile overlay to the map, using the heat map tile provider.
-        map.addTileOverlay(new TileOverlayOptions().tileProvider(hmtp));*/
     }
     /**
      * A placeholder fragment containing a simple view.
@@ -155,14 +146,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         Log.e("location", "updating");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+        /*map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))
                 .zoom(17)
                 .build();
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
     }
 
     @Override
